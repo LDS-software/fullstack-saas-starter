@@ -17,6 +17,9 @@ RUN pnpm install --frozen-lockfile
 
 COPY --from=pruner /app/out/full/ .
 COPY turbo.json turbo.json
+
+RUN pnpm --filter=@saas/api-tasks exec prisma generate --schema=apps/api-tasks/prisma/schema.prisma
+
 RUN pnpm turbo build
 
 FROM base AS runner
