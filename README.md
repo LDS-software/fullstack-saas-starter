@@ -5,6 +5,25 @@
 
 This project is a **High-Performance Monorepo** orchestrated by **Turborepo** and managed by **pnpm**. This setup ensures efficient dependency sharing, fast builds via remote caching, and a clean separation between the **BFF (NestJS)** and **Frontend (Next.js)**.
 
+## 🚀 Deployment & Infrastructure
+
+This project follows professional software engineering standards, utilizing a multi-environment strategy to ensure high availability and continuous delivery.
+
+### 🧪 Staging Environment (HML)
+The staging environment is hosted on **Render**.
+> **Note:** Since it uses Render's free tier, the services may experience a **"Cold Start"** (30-50 seconds delay) if they haven't been accessed recently. Once awake, performance is stable.
+
+* **Frontend:** [web-staging-sbjp.onrender.com](https://web-staging-sbjp.onrender.com)
+* **BFF (Backend for Frontend):** [bff-staging.onrender.com](https://bff-staging.onrender.com)
+* **Core API:** [saas-business-manager.onrender.com](https://saas-business-manager.onrender.com)
+
+### 🏗️ Tech Stack & DevOps
+* **Database:** Utilizing **Neon.tech**, a serverless PostgreSQL with autoscaling capabilities and point-in-time recovery.
+* **CI/CD Pipeline:** Fully automated via **GitHub Actions**. Every push to the `main` or `develop` branch triggers automated builds, linting, and deployment.
+* **Infrastructure Strategy:** I've implemented a separation of concerns between the API, BFF, and Web layers, all orchestrated within a **Turborepo** monorepo for maximum performance during development and deployment.
+
+---
+
 #### **Prerequisites**
 * **Node.js**: v18 or higher.
 * **pnpm**: v9.0.0 or higher.
