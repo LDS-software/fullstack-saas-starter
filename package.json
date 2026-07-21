@@ -10,5 +10,9 @@
   },
   "devDependencies": {
     "turbo": "latest"
+  },
+  "dependencies": {
+    "@nestjs-modules/mailer": "^2.3.7",
+    "nodemailer": "^9.0.3"
   }
 }
