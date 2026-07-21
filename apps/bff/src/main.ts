@@ -11,6 +11,15 @@ async function bootstrap() {
     AppModule,
     new FastifyAdapter()
   );
+  const allowedOrigins = process.env.ALLOWED_ORIGINS
+    ? process.env.ALLOWED_ORIGINS.split(',').map(o => o.trim())
+    : ['https://web-staging-sbjp.onrender.com'];
+
+  app.enableCors({
+    origin: allowedOrigins,
+    methods: 'GET,HEAD,PUT,PATCH,POST,DELETE,OPTIONS',
+    credentials: true,
+  });
 
   const config = new DocumentBuilder()
     .setTitle('SaaS Business Manager API')
@@ -24,10 +33,10 @@ async function bootstrap() {
 
   SwaggerModule.setup('docs', app, document);
 
-  await app.listen(3001, '0.0.0.0');
+  await app.listen({ port: 3001, host: '0.0.0.0' });
+
   console.log(`🚀 Front rodando em: http://localhost:3000/`);
   console.log(`🚀 BFF rodando em: http://localhost:3001`);
   console.log(`📑 Documentação: http://localhost:3001/docs`);
-
 }
 bootstrap();
