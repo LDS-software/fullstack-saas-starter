@@ -1,70 +1,97 @@
+# 🚀 Production-Ready Full-Stack SaaS Boilerplate
+
+A modern, scalable, and decoupled full-stack architecture template built with **Next.js**, **NestJS**, **PostgreSQL**, and **Docker**. Designed to jumpstart production-grade SaaS platforms with enterprise standards, clear separation of concerns, and robust developer tooling out of the box.
 
 ---
 
-### 📂 **Monorepo Architecture & Setup**
+## 📌 Project Overview
 
-This project is a **High-Performance Monorepo** orchestrated by **Turborepo** and managed by **pnpm**. This setup ensures efficient dependency sharing, fast builds via remote caching, and a clean separation between the **BFF (NestJS)** and **Frontend (Next.js)**.
+This repository serves as a **foundational starter kit / template** for building complex web applications without wasting time configuring infrastructure, authentication, or service communications.
 
-## 🚀 Deployment & Infrastructure
-
-This project follows professional software engineering standards, utilizing a multi-environment strategy to ensure high availability and continuous delivery.
-
-### 🧪 Staging Environment (HML)
-The staging environment is hosted on **Render**.
-> **Note:** Since it uses Render's free tier, the services may experience a **"Cold Start"** (30-50 seconds delay) if they haven't been accessed recently. Once awake, performance is stable.
-
-* **Frontend:** [web-staging-sbjp.onrender.com](https://web-staging-sbjp.onrender.com)
-* **BFF (Backend for Frontend):** [bff-staging.onrender.com](https://bff-staging.onrender.com)
-* **Core API:** [saas-business-manager.onrender.com](https://saas-business-manager.onrender.com)
-
-### 🏗️ Tech Stack & DevOps
-* **Database:** Utilizing **Neon.tech**, a serverless PostgreSQL with autoscaling capabilities and point-in-time recovery.
-* **CI/CD Pipeline:** Fully automated via **GitHub Actions**. Every push to the `main` or `develop` branch triggers automated builds, linting, and deployment.
-* **Infrastructure Strategy:** I've implemented a separation of concerns between the API, BFF, and Web layers, all orchestrated within a **Turborepo** monorepo for maximum performance during development and deployment.
+It implements a **Backend-for-Frontend (BFF)** pattern to isolate client-specific API logic from core backend domains, ensuring clean architecture, security, and high performance.
 
 ---
 
-#### **Prerequisites**
-* **Node.js**: v18 or higher.
-* **pnpm**: v9.0.0 or higher.
-  > If not installed, run: `sudo corepack enable`
+## 🛠️ Tech Stack & Architecture
+
+### **Frontend (`apps/web`)**
+
+* **Framework:** Next.js (App Router) & React
+* **Language:** TypeScript
+* **Styling:** Tailwind CSS
+
+### **BFF - Backend for Frontend (`apps/bff`)**
+
+* **Framework:** NestJS (Node.js)
+* **Purpose:** API orchestration, data aggregation, rate limiting, and UI-optimized endpoints.
+* **Documentation:** Integrated Swagger UI (`/docs`).
+
+### **Core API (`services/api`)**
+
+* **Framework:** NestJS (Node.js)
+* **Database & ORM:** PostgreSQL + Prisma ORM
+* **Transactional Email:** Mailtrap (for password recovery & notifications)
+* **Key Features:** Authentication (JWT), password recovery workflow, business domain isolation.
+
+### **Infrastructure & DevOps (`infra/`)**
+
+* **Containerization:** Docker & Docker Compose
+* **CI/CD:** Automated deployment pipelines (GitHub Actions)
+* **Environment:** Centralized configuration management with `.env.example` templates.
 
 ---
 
-#### **1. Initial Installation**
-From the root directory, install all dependencies for every application and package within the workspace:
-```bash
-pnpm install
+## 🏗️ System Flow
+
+```text
+[ Next.js Frontend ] ──▶ [ NestJS BFF ] ──▶ [ NestJS Core API ] ──▶ [ PostgreSQL ]
+                                                   │
+                                                   └──▶ [ Mailtrap (SMTP) ]
+
 ```
 
-#### **2. Environment Configuration**
-Navigate to the BFF directory to set up your environment variables (required for **Prisma ORM**):
+---
+
+## 🎯 Key Features Included
+
+* 🔐 **Authentication & Authorization:** Complete authentication flow, JWT handling, and password reset implementation via Mailtrap SMTP.
+* 📊 **Base Dashboard Structure:** Pre-configured shell layout with responsive sidebar and user session state.
+* 🔌 **Decoupled Architecture:** Strict separation between UI, orchestration layer (BFF), and core business logic.
+* 🐳 **Docker-Native:** Fully containerized development environment using Docker Compose.
+* 📖 **API Documentation:** Auto-generated OpenAPI/Swagger specifications for endpoints.
+
+---
+
+## ⚙️ Quick Start
+
+### 1. Clone & Configure Environment Variables
+
 ```bash
-cd apps/bff
+# Clone the repository
+git clone https://github.com/YOUR_USERNAME/YOUR_REPO_NAME.git
+
+# Navigate to project folder
+cd YOUR_REPO_NAME
+
+# Create .env from template
 cp .env.example .env
+
 ```
 
-#### **3. Running in Development**
-To launch the entire ecosystem (BFF + Frontend) simultaneously with a single command:
+> ⚠️ **Important:** Make sure to set your **PostgreSQL Database Connection String** (`DATABASE_URL`) and **Mailtrap Credentials** (SMTP host, port, user, and password) in your `.env` file before running the application.
+
+### 2. Run with Docker
+
+This boilerplate is configured to run entirely via Docker Compose for local development:
+
 ```bash
-pnpm dev
+# Spin up all containerized services (Frontend, BFF, API, PostgreSQL)
+docker compose up --build
+
 ```
-> **Note:** Turborepo will handle parallel execution and provide a unified log stream for both services.
 
 ---
 
-### 🛠 **Tech Stack**
-* **Monorepo Manager**: [Turborepo](https://turbo.build/)
-* **Package Manager**: [pnpm](https://pnpm.io/) (Content-addressable storage)
-* **Backend (BFF)**: [NestJS](https://nestjs.com/) + [Fastify](https://www.fastify.io/)
-* **ORM**: [Prisma](https://www.prisma.io/)
-* **Frontend**: [Next.js](https://nextjs.org/)
+## 💡 Why Use This Template?
 
----
-
-### **Why this setup?**
-* **Scalability:** The `pnpm-workspace.yaml` structure allows us to scale to dozens of microservices without duplicating `node_modules`.
-* **Reliability:** By using `packageManager` enforcement, we ensure all developers and CI/CD pipelines use the exact same environment.
-* **Speed:** Turbo's caching mechanism significantly reduces build times for international-level production deployments.
-
----
+Setting up enterprise software patterns from scratch can take dozens of hours. This template provides a battle-tested architecture that allows developers to focus immediately on **core business rules, integrations (e.g., Stripe, AI services, Queue processors), and delivering user value**.
